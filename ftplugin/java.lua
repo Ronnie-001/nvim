@@ -17,7 +17,11 @@ local config_dir = vim.fn.stdpath('data') .. '/mason/packages/jdtls/config_linux
 -- local workspace_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:h')
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 local workspace_dir = vim.fn.stdpath('data') .. '/site/java/workspace-root/' .. project_name
-os.execute("mkdir " .. workspace_dir)
+
+local f = io.open(workspace_dir, "r")
+if f == nil then
+    os.execute("mkdir " .. workspace_dir)
+end
 
 -- Needed for debugging
 local bundles = {

@@ -9,9 +9,9 @@ local opts = { noremap = true, silent = true }
 -- This ensures spacebar doesn't do anything by default
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
--- Move the cursor through wrapped lines using arrow keys (Up and Down)
-vim.keymap.set('n', 'Up', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'Down', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+-- Move the cursor through wrapped lines using hjkl (Down and Up)
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
 -- Clear search highlight when pressing Esc
 vim.keymap.set('n', '<Esc>', ':noh<CR>', opts)
@@ -36,11 +36,11 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', opts)
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 
--- Resize the window using hjkl (resize with hjkl instead of arrow keys)
-vim.keymap.set('n', 'h', ':vertical resize -2<CR>', opts) -- Shrink window width
-vim.keymap.set('n', 'j', ':resize +2<CR>', opts) -- Expand window height
-vim.keymap.set('n', 'k', ':resize -2<CR>', opts) -- Shrink window height
-vim.keymap.set('n', 'l', ':vertical resize +2<CR>', opts) -- Expand window width
+-- Resize the window using arrow keys
+vim.keymap.set('n', '<Left>', ':vertical resize -2<CR>', opts) -- Shrink window width
+vim.keymap.set('n', '<Down>', ':resize +2<CR>', opts) -- Expand window height
+vim.keymap.set('n', '<Up>', ':resize -2<CR>', opts) -- Shrink window height
+vim.keymap.set('n', '<Right>', ':vertical resize +2<CR>', opts) -- Expand window width
 
 -- Switch between open buffers (tabs in Vim)
 vim.keymap.set('n', '<Tab>', ':bnext<CR>', opts) -- Next buffer
@@ -58,11 +58,11 @@ vim.keymap.set('n', '<leader>h', '<C-w>s', opts) -- Split window horizontally
 vim.keymap.set('n', '<leader>se', '<C-w>=', opts) -- Make split windows equal size
 vim.keymap.set('n', '<leader>xs', ':close<CR>', opts) -- Close the current split window
 
--- Navigate between splits using arrow keys (Left, Right, Up, Down)
-vim.keymap.set('n', 'Up', ':wincmd k<CR>', opts) -- Move to the split above
-vim.keymap.set('n', 'Down', ':wincmd j<CR>', opts) -- Move to the split below
-vim.keymap.set('n', 'Left', ':wincmd h<CR>', opts) -- Move to the split left
-vim.keymap.set('n', 'Right', ':wincmd l<CR>', opts) -- Move to the split right
+--  Navigate between splits using CTRL + HJKL
+vim.keymap.set('n', '<C-h>', ':wincmd h<CR>', opts) -- Move to the split left
+vim.keymap.set('n', '<C-j>', ':wincmd j<CR>', opts) -- Move to the split below
+vim.keymap.set('n', '<C-k>', ':wincmd k<CR>', opts) -- Move to the split above
+vim.keymap.set('n', '<C-l>', ':wincmd l<CR>', opts) -- Move to the split right
 
 -- Tabs management (open, close, next, previous)
 vim.keymap.set('n', '<leader>to', ':tabnew<CR>', opts) -- Open a new tab
