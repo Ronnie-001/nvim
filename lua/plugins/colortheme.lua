@@ -1,4 +1,3 @@
-
 return {
     "rebelot/kanagawa.nvim",
     config = function()
@@ -12,14 +11,18 @@ return {
             statementStyle = { bold = true },
             typeStyle = {},
             transparent = false,         -- do not set background color
-            dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
+            dimInactive = false,         -- dim inactive window :h hl-NormalNC
             terminalColors = true,       -- define vim.g.terminal_color_{0,17}
             colors = {                   -- add/modify theme and palette colors
                 palette = {},
                 theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
             },
             overrides = function(colors) -- add/modify highlights
-                return {}
+                return {
+                    -- CursorLineNr = { bg = "NONE", fg = "None" },
+                    -- LineNr = { fg = colors.palette.fujiGray, bg = "NONE" },
+                    -- SignColumn = { bg = "NONE" },
+                }
             end,
             theme = "wave",              -- Load "wave" theme when 'background' option is not set
             background = {               -- map the value of 'background' option to a theme
@@ -30,5 +33,7 @@ return {
 
         -- Apply the theme
         vim.cmd("colorscheme kanagawa")
+
+        -- vim.api.nvim_set_hl(0, "CursorLine", { bg = "NONE", fg = "NONE" })
     end
 }
