@@ -149,7 +149,7 @@ config.on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>lrc', jdtls.extract_constant, { desc = 'Extract constant', buffer = bufnr })
 end
 
-local main_class = "com.ronapps.ecommercepi.EcommerceApiApplication" 
+local main_class = "com.ronapps.ecommercepi.EcommerceApiApplication"
 
 dap.configurations.java = {
   {
