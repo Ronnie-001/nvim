@@ -130,7 +130,7 @@ config.on_attach = function(client, bufnr)
     jdtls_dap.setup_dap_main_class_configs()
   end
 
-  require('keymaps').map_java_keys(bufnr)
+ --  require('keymaps').map_java_keys(bufnr)
 
   vim.keymap.set('n', "<leader>lo", jdtls.organize_imports, { desc = 'Organize imports', buffer = bufnr })
   vim.keymap.set('n', "<leader>tc", jdtls.test_class, { desc = 'Test class', buffer = bufnr })
