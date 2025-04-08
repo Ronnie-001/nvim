@@ -1,12 +1,3 @@
--- return {
---      'goolord/alpha-nvim',
---      dependencies = { 'echasnovski/mini.icons' },
---      config = function ()
---          require'alpha'.setup(require'alpha.themes.startify'.config)
---      end
--- }
-
-
 return {
     'goolord/alpha-nvim',
     dependencies = { 'echasnovski/mini.icons' },
@@ -29,13 +20,14 @@ return {
         -- set the buttons
         dashboard.section.buttons.val = {
             dashboard.button( "e", "  > New file" , ":ene <BAR> startinsert <CR>"),
-            dashboard.button( "f", "  > Find file", ":cd $HOME/Workspace | Telescope find_files<CR>"),
+            dashboard.button("f", "󰩷  > Find file", ":Telescope find_files<CR>"),
             dashboard.button( "r", "  > Recent"   , ":Telescope oldfiles<CR>"),
             dashboard.button( "s", "  > Settings" , ":e $MYVIMRC | cd %:p:h | split . | wincmd k | pwd<CR>"),
-            dashboard.button( "x", "  > Close buffer", ":Bdelete!<CR>"),
+            dashboard.button( "x", "󰭌  > Close buffer", ":Bdelete!<CR>"),
             dashboard.button( "b", "  > New buffer", ":enew<CR>"),
-            dashboard.button( "q", "  > Quit NVIM", ":qa<CR>"),
+            dashboard.button( "q", "󰩈  > Quit NVIM", ":qa<CR>"),
         }
+
         -- Set footer (optional, currently disabled)
         -- local fortune = require("alpha.fortune")
         -- dashboard.section.footer.val = fortune()

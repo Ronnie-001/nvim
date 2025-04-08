@@ -26,7 +26,7 @@ require('lazy').setup({
     require 'plugins.indent-blankline',
     require 'plugins.autocompletion',
     require 'plugins.alpha',
-    require 'plugins.notification_deamon',
+    -- require 'plugins.notification_deamon',
     require 'plugins.jdtls',
     require 'plugins.dap',
     require 'plugins.neotest'

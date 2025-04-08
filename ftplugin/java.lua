@@ -1,7 +1,7 @@
 -- Java Setup
 local jdtls_ok, jdtls = pcall(require, "jdtls")
 if not jdtls_ok then
-  vim.notify "JDTLS not found, install with `:LspInstall jdtls`"
+  vim.notify("JDTLS not found, install with `:LspInstall jdtls`")
   return
 end
 
@@ -14,30 +14,30 @@ end
 local jdtls_dir = vim.fn.stdpath('data') .. '/mason/share/jdtls'
 local config_dir = vim.fn.stdpath('data') .. '/mason/packages/jdtls/config_linux'
 
--- local workspace_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:h')
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+-- Get root_dir and dynamic project name
+local root_dir = require('jdtls.setup').find_root({ '.project', '.git', 'mvnw', 'pom.xml', 'build.gradle', 'src' })
+local project_name = vim.fn.fnamemodify(root_dir, ':t')
 local workspace_dir = vim.fn.stdpath('data') .. '/site/java/workspace-root/' .. project_name
 
-local f = io.open(workspace_dir, "r")
-if f == nil then
-    os.execute("mkdir " .. workspace_dir)
+-- Ensure workspace_dir exists
+if vim.fn.isdirectory(workspace_dir) == 0 then
+  vim.fn.mkdir(workspace_dir, "p")
 end
 
--- Needed for debugging
+-- Debugger + Testing bundles
 local bundles = {
   vim.fn.glob(vim.fn.stdpath('data') .. '/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar'),
 }
-
--- Needed for running/debugging unit tests
 vim.list_extend(bundles, vim.split(vim.fn.glob(vim.fn.stdpath('data') .. "/mason/share/java-test/*.jar", 1), "\n"))
 
+-- Capabilities
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
 extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
+-- JDTLS config
 local config = {
   cmd = {
     'java',
-
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
     '-Dosgi.bundles.defaultStartLevel=4',
     '-Declipse.product=org.eclipse.jdt.ls.core.product',
@@ -48,31 +48,28 @@ local config = {
     '--add-modules=ALL-SYSTEM',
     '--add-opens', 'java.base/java.util=ALL-UNNAMED',
     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-
-    '-jar', jdtls_dir .. '/plugins/org.eclipse.equinox.launcher.jar',
+    '-jar', vim.fn.glob(jdtls_dir .. '/plugins/org.eclipse.equinox.launcher_*.jar'),
     '-configuration', config_dir,
     '-data', workspace_dir,
   },
-  root_dir = require('jdtls.setup').find_root({ '.project', '.git', 'mvnw', 'pom.xml', 'build.gradle', 'src' }),
+
+  root_dir = root_dir,
 
   settings = {
     java = {
-      eclipse = { downloadSources = true, },
-      maven = { downloadSources = true, },
-      implementationsCodeLens = { enabled = true, },
-      referencesCodeLens = { enabled = true, },
-      references = { enabled = true, },
+      eclipse = { downloadSources = true },
+      maven = { downloadSources = true },
+      implementationsCodeLens = { enabled = true },
+      referencesCodeLens = { enabled = true },
+      references = { enabled = true },
       signatureHelp = { enabled = true },
-
       project = {
         outputPath = "bin",
-        sourcesPaths = { "src", "test" }
+        sourcesPaths = { "src", "test" },
       },
-
       configuration = {
         updateBuildConfiguration = "interactive",
       },
-
       format = {
         enabled = true,
         comments = true,
@@ -82,7 +79,6 @@ local config = {
         },
       },
     },
-
 
     completion = {
       favoriteStaticMembers = {
@@ -94,12 +90,7 @@ local config = {
         "java.util.Objects.requireNonNullElse",
         "org.mockito.Mockito.*",
       },
-      importOrder = {
-        "java",
-        "javax",
-        "com",
-        "org"
-      },
+      importOrder = { "java", "javax", "com", "org" },
     },
 
     extendedClientCapabilities = extendedClientCapabilities,
@@ -110,6 +101,7 @@ local config = {
         staticStarThreshold = 9999,
       },
     },
+
     codeGeneration = {
       toString = {
         template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}",
@@ -122,23 +114,23 @@ local config = {
     allow_incremental_sync = true,
   },
 
-  -- Needed for auto-completion with method signatures and placeholders
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
 
   init_options = {
     bundles = bundles,
   },
-
 }
 
+-- Auto-detect main class after JDTLS is attached
 config.on_attach = function(client, bufnr)
-  require('jdtls').setup_dap({ hotcodereplace = 'auto' })
+  jdtls.setup_dap({ hotcodereplace = 'auto' })
 
   local status_ok, jdtls_dap = pcall(require, "jdtls.dap")
   if status_ok then
     jdtls_dap.setup_dap_main_class_configs()
   end
-  --   require('keymaps').map_java_keys(bufnr)
+
+  require('keymaps').map_java_keys(bufnr)
 
   vim.keymap.set('n', "<leader>lo", jdtls.organize_imports, { desc = 'Organize imports', buffer = bufnr })
   vim.keymap.set('n', "<leader>tc", jdtls.test_class, { desc = 'Test class', buffer = bufnr })
@@ -147,18 +139,12 @@ config.on_attach = function(client, bufnr)
   vim.keymap.set('v', '<leader>lrm', [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
     { desc = 'Extract method', buffer = bufnr })
   vim.keymap.set('n', '<leader>lrc', jdtls.extract_constant, { desc = 'Extract constant', buffer = bufnr })
+
+  -- 🔍 Auto-detect main class using JDTLS
+  vim.cmd([[
+    command! -buffer JavaDetectMain lua require('jdtls.dap').setup_dap_main_class_configs()
+  ]])
 end
 
-local main_class = "com.ronapps.ecommercepi.EcommerceApiApplication"
-
-dap.configurations.java = {
-  {
-    type = "java",
-    request = "launch",
-    name = "Launch Main",
-    mainClass = main_class,
-    projectName = "YourProjectName",
-  },
-}
-
+-- Start or attach JDTLS
 jdtls.start_or_attach(config)

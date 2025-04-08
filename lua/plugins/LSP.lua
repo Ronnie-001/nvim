@@ -209,7 +209,7 @@ return {
         gopls = {
             cmd = { "gopls" },
         
-            filetypes = { "go", "gomod", "gowork", "gotmpl"},    
+            filetypes = { "go", "gomod", "gowork", "gotmpl"},
 
             settings = {
                 gopls = {
