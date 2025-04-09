@@ -1,5 +1,7 @@
 vim.wo.number = true
 
+
+vim.opt.showmode = false
 vim.o.clipboard = 'unnamedplus'
 vim.o.wrap = false
 vim.o.linebreak = true

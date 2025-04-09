@@ -137,6 +137,17 @@ return {
         end,
       })
 
+      -- diagnostics
+      vim.diagnostic.config({
+        virtual_text = false,
+        signs = true,
+        underline = true,
+        update_in_insert = false,
+        severity_sort = true,
+      })
+      -- view the diagnostic error message
+      vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float)
+
       -- Change diagnostic symbols in the sign column (gutter)
       -- if vim.g.have_nerd_font then
       --   local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
@@ -197,7 +208,7 @@ return {
                 },
                 
                 provideFormatter = true
-            }    
+            }
         },
 
         phpactor = {
