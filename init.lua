@@ -10,7 +10,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 
--- Turn off semantic tokens so it stops messing with my kanagawa theme
+-- Turn off semantic tokens so it stops messing with the current theme applied
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -39,8 +39,7 @@ require('lazy').setup({
     require 'plugins.jdtls',
     require 'plugins.dap',
     require 'plugins.neotest',
-    require 'plugins.oil'
-    -- require 'plugins.mini-files'
+    -- require 'plugins.oil'
+    require 'plugins.mini-files',
+    require 'plugins.arrow'
 })
-
-
