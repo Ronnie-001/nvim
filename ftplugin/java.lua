@@ -70,6 +70,8 @@ local config = {
       configuration = {
         updateBuildConfiguration = "interactive",
       },
+       
+      semanticTokens = {enabled = false},
       format = {
         enabled = true,
         comments = true,
@@ -123,6 +125,7 @@ local config = {
 
 -- Auto-detect main class after JDTLS is attached
 config.on_attach = function(client, bufnr)
+  client.server_capabilities.semanticTokensProvider = nil
   jdtls.setup_dap({ hotcodereplace = 'auto' })
 
   local status_ok, jdtls_dap = pcall(require, "jdtls.dap")

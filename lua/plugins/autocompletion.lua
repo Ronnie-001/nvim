@@ -102,7 +102,7 @@ return { -- Autocompletion
             luasnip.jump(-1)
           end
         end, { 'i', 's' }),
-      },
+     },
 
       sources = {
         { name = 'nvim_lsp' },

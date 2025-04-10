@@ -1,11 +1,27 @@
-
 return {
   'nvim-lualine/lualine.nvim',
   config = function()
+    local custom_iceberg = require('lualine.themes.iceberg_dark')
+
+    -- Override normal and command mode 'a' section to be turquoise
+    local turquoise = '#755db0' -- or any turquoise hex you like
+
+    custom_iceberg.normal.a.bg = turquoise
+    custom_iceberg.normal.a.fg = '#000000'
+    custom_iceberg.normal.a.gui = 'bold'
+
+    custom_iceberg.command = {
+      a = {
+        bg = turquoise,
+        fg = '#000000',
+        gui = 'bold'
+      }
+    }
+
     require('lualine').setup {
       options = {
         icons_enabled = true,
-        theme = 'iceberg_dark',
+        theme = custom_iceberg,
         component_separators = { left = '', right = ''},
         section_separators = { left = '', right = ''},
         disabled_filetypes = {

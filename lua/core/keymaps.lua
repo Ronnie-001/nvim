@@ -116,3 +116,8 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('n', '<leader>ss', ':mksession! .session.vim<CR>', { noremap = true, silent = false }) -- Save session
 vim.keymap.set('n', '<leader>sl', ':source .session.vim<CR>', { noremap = true, silent = false }) -- Load session
 
+
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+-- -- In your keymaps.lua file, bind '-' to open the file explorer
+-- vim.api.nvim_set_keymap('n', '-', ':lua require("mini.files").open()<CR>', { noremap = true, silent = true })

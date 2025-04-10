@@ -20,6 +20,7 @@ return {
     opts = {
       adapters = {
         ["neotest-java"] = {
+            bundles = bundles,
         },
       },
     },

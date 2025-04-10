@@ -10,12 +10,21 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 
+-- Turn off semantic tokens so it stops messing with my kanagawa theme
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    client.server_capabilities.semanticTokensProvider = nil
+  end,
+});
+
 vim.opt.rtp:prepend(lazypath)
 
 -- Disable inbuilt jdtls support
 vim.g.jdtls_enabled = false
+
 require('lazy').setup({
-    require 'plugins.neotree',
+    -- require 'plugins.neotree',
     require 'plugins.colortheme',
     require 'plugins.bufferline',
     require 'plugins.lualine',
@@ -29,12 +38,9 @@ require('lazy').setup({
     -- require 'plugins.notification_deamon',
     require 'plugins.jdtls',
     require 'plugins.dap',
-    require 'plugins.neotest'
+    require 'plugins.neotest',
+    require 'plugins.oil'
+    -- require 'plugins.mini-files'
 })
-
-
-
-
-
 
 
